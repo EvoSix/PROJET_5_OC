@@ -1,1 +1,2 @@
-front/nodes_modules
+/front/node_modules
+/front/coverage
