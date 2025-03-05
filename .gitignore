@@ -2,3 +2,4 @@
 /front/node_modules
 /front/coverage
 
+front/yarn.lock
