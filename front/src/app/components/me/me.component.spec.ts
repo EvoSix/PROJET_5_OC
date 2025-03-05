@@ -1,4 +1,5 @@
 import { HttpClientModule } from "@angular/common/http";
+
 import {
   ComponentFixture,
   fakeAsync,
@@ -6,10 +7,12 @@ import {
   TestBed,
   tick,
 } from "@angular/core/testing";
+
 import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
+
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
 import { SessionService } from "src/app/services/session.service";
 import { expect } from "@jest/globals";
@@ -42,6 +45,7 @@ class MockUserService {
   }
 }
 
+
 describe("MeComponent", () => {
   let component: MeComponent;
   let fixture: ComponentFixture<MeComponent>;
@@ -53,7 +57,9 @@ describe("MeComponent", () => {
       admin: true,
       id: 1,
     },
+
     logOut: jest.fn(),
+
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -67,11 +73,13 @@ describe("MeComponent", () => {
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
+
       ],
       providers: [
         { provide: SessionService, useValue: mockSessionService },
         { provide: UserService, useClass: MockUserService },
       ],
+
     }).compileComponents();
 
     fixture = TestBed.createComponent(MeComponent);
