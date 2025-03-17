@@ -3,3 +3,5 @@
 /front/coverage
 
 front/yarn.lock
+back/target
+front/.angular
