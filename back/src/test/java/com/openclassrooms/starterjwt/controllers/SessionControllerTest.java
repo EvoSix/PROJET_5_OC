@@ -3,15 +3,11 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.*;
+
+import com.openclassrooms.starterjwt.mapper.SessionMapper;
 import org.springframework.http.HttpHeaders;
-import com.openclassrooms.starterjwt.security.jwt.JwtUtils;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.starterjwt.dto.SessionDto;
-import com.openclassrooms.starterjwt.mapper.SessionMapper;
 import com.openclassrooms.starterjwt.models.Session;
 import com.openclassrooms.starterjwt.services.SessionService;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,11 +36,7 @@ public class SessionControllerTest {
     @Mock
     private SessionMapper sessionMapper;
 
-    @Mock
-    private AuthenticationManager authenticationManager;
 
-    @Mock
-    private JwtUtils jwtUtils;
 
     @InjectMocks
     private SessionController sessionController;
@@ -56,14 +48,7 @@ public class SessionControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(sessionController).build();
 
 
-        Authentication authentication = mock(Authentication.class);
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenReturn(authentication);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-
-        jwtToken = "mocked-jwt-token";
-        when(jwtUtils.generateJwtToken(any(Authentication.class))).thenReturn(jwtToken);
     }
 //GET /api/session/{id}
     @Test
