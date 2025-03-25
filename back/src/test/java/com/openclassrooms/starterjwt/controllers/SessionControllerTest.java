@@ -50,7 +50,7 @@ public class SessionControllerTest {
 
 
     }
-//GET /api/session/{id}
+
     @Test
     @DisplayName("Get Session by ID, Should return session when exist")
     void findById_ShouldReturnSession_WhenSessionExists() throws Exception {
@@ -81,7 +81,7 @@ public class SessionControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken))
                 .andExpect(status().isNotFound());
     }
-//GET /api/session
+
 
     @Test
     @DisplayName("Get ALL sessions, Should return List Sessions")
@@ -110,7 +110,7 @@ public class SessionControllerTest {
     }
 
 
-//POST /api/session
+
 
     @Test
     @DisplayName("Post a Session, should return Session DTO in success ")
@@ -142,7 +142,7 @@ public class SessionControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("New Session"));}
 
-    //DELETE /api/session/{id}
+
     @Test
     @DisplayName("Delete a session, should return ok when session exist")
     void delete_ShouldReturnOk_WhenSessionExists() throws Exception {
@@ -163,7 +163,7 @@ public class SessionControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken))
                 .andExpect(status().isNotFound());
     }
-//POST /api/session/{id}/participate/{userId}
+
 @Test
 @DisplayName("Post Participant by Session ID, should return ok when success")
 void participate_ShouldReturnOk_WhenSuccessful() throws Exception {
@@ -172,4 +172,38 @@ void participate_ShouldReturnOk_WhenSuccessful() throws Exception {
             .andExpect(status().isOk());
 }
 
+
+    @Test
+    @DisplayName("Update, should return ok when success")
+    void validSession_updateWithId1_shouldReturnOk() throws Exception {
+        when(sessionService.update(anyLong(),any())).thenReturn(new Session());
+        String reqBody = "{\"name\": \"session 1\",\"date\": \"2012-01-01T00:00:00.000+00:00\",\"teacher_id\": 1,\"description\": \"my description\",\"users\": []}";
+        mockMvc.perform(put("/api/session/1")
+                .content(reqBody)
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Update, should return bad ")
+    void validSession_updateWithIdString_shouldReturnBadRequest() throws Exception {
+        String reqBody = "{\"name\": \"session 1\",\"date\": \"2012-01-01T00:00:00.000+00:00\",\"teacher_id\": 1,\"description\": \"my description\",\"users\": []}";
+        mockMvc.perform(put("/api/session/a")
+                .content(reqBody)
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+    }
+    @Test
+    @DisplayName("LongerParticipate, should return ok when success")
+    void sessionId2AndParticipatingUserId1Exist_noLongerParticipate_shouldReturnOk() throws Exception {
+        doNothing().when(sessionService).noLongerParticipate(2L,1L);
+        mockMvc.perform(delete("/api/session/2/participate/1")).andExpect(status().isOk());
+
+    }
+
+    @Test
+    @DisplayName("LongerParticipate, should return bad ")
+    void idString_noLongerParticipate_shouldReturnBadRequest() throws Exception {
+        mockMvc.perform(delete("/api/session/a/participate/1")).andExpect(status().isBadRequest());
+        mockMvc.perform(delete("/api/session/1/participate/b")).andExpect(status().isBadRequest());
+    }
 }
+

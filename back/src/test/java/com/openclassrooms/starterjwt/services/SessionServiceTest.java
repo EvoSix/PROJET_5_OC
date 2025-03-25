@@ -49,13 +49,13 @@ public class SessionServiceTest {
     @Test
     @DisplayName("Create Session - Success")
     void create_ShouldReturnSavedSession() {
-        // Arrange
+
         when(sessionRepository.save(any(Session.class))).thenReturn(session);
 
-        // Act
+
         Session savedSession = sessionService.create(session);
 
-        // Assert
+
         assertNotNull(savedSession);
         assertEquals(session.getName(), savedSession.getName());
         verify(sessionRepository, times(1)).save(session);
@@ -68,10 +68,9 @@ public class SessionServiceTest {
         List<Session> sessions = List.of(session);
         when(sessionRepository.findAll()).thenReturn(sessions);
 
-        // Act
         List<Session> result = sessionService.findAll();
 
-        // Assert
+
         assertEquals(1, result.size());
         verify(sessionRepository, times(1)).findAll();
     }
@@ -80,13 +79,13 @@ public class SessionServiceTest {
     @Test
     @DisplayName("Find session by ID - Success")
     void getById_ShouldReturnSession_WhenExists() {
-        // Arrange
+
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
 
-        // Act
+
         Session result = sessionService.getById(1L);
 
-        // Assert
+
         assertNotNull(result);
         assertEquals(session.getId(), result.getId());
         verify(sessionRepository, times(1)).findById(1L);
@@ -95,13 +94,13 @@ public class SessionServiceTest {
     @Test
     @DisplayName("Find session by ID - Not Found")
     void getById_ShouldReturnNull_WhenNotExists() {
-        // Arrange
+
         when(sessionRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Act
+
         Session result = sessionService.getById(1L);
 
-        // Assert
+
         assertNull(result);
     }
     @Test
@@ -113,10 +112,10 @@ public class SessionServiceTest {
 
         session.setName("Updated Session");
 
-        // Act
+
         Session updatedSession = sessionService.update(1L, session);
 
-        // Assert
+
         assertNotNull(updatedSession);
         assertEquals("Updated Session", updatedSession.getName());
         verify(sessionRepository, times(1)).save(session);
@@ -129,10 +128,10 @@ public class SessionServiceTest {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(sessionRepository.save(any(Session.class))).thenReturn(session);
 
-        // Act
+
         sessionService.participate(1L, 1L);
 
-        // Assert
+
         assertTrue(session.getUsers().contains(user));
         verify(sessionRepository, times(1)).save(session);
     }
@@ -145,7 +144,7 @@ public class SessionServiceTest {
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
-        // Act & Assert
+
         assertThrows(BadRequestException.class, () -> sessionService.participate(1L, 1L));
     }
     @Test
@@ -157,10 +156,9 @@ public class SessionServiceTest {
 
         when(sessionRepository.save(any(Session.class))).thenReturn(session);
 
-        // Act
         sessionService.noLongerParticipate(1L, 1L);
 
-        // Assert
+
         assertFalse(session.getUsers().contains(user));
         verify(sessionRepository, times(1)).save(session);
     }
@@ -168,11 +166,21 @@ public class SessionServiceTest {
     @Test
     @DisplayName("User no longer participate in session - Not Participating")
     void noLongerParticipate_ShouldThrowException_WhenUserNotParticipating() {
-        // Arrange
+
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
 
 
-        // Act & Assert
+
         assertThrows(BadRequestException.class, () -> sessionService.noLongerParticipate(1L, 1L));
+    }
+
+    @Test
+    public void whenDeleteWithId1_repositoryShouldDeletById1() {
+
+        Long id = 1L;
+
+        sessionService.delete(id);
+
+        verify(sessionRepository).deleteById(id);
     }
 }
