@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
-
 @SpringBootTest
 @ActiveProfiles("test")
 public class SessionServiceIntegration {
