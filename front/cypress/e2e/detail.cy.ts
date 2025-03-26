@@ -4,7 +4,7 @@ import getFormattedDate from "../utils/Datemanagment";
 
 describe("Detail spec", () => {
     it("Participate to session", () => {
-        // Login mock
+ 
         cy.visit('/login');
 
         const user = {
@@ -111,7 +111,7 @@ describe("Detail spec", () => {
     })
 
     it("Should cancel participation", () => {
-        // Login mock
+ 
         cy.visit('/login');
 
         const user = {
@@ -212,7 +212,7 @@ describe("Detail spec", () => {
             createdAt: getFormattedDate(-10),
             updatedAt: getFormattedDate(3),              
         })
-        // Do not participate button
+      
         const doNotParticipateButton =  cy.contains('Do not participate');
         doNotParticipateButton.should("be.visible");
         doNotParticipateButton.click();

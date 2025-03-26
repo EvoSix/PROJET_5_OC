@@ -6,7 +6,7 @@ import getFormattedDate, { getMonthName,getYearFromDate, getDayFromDate } from "
 
 describe("Information session spec", () => {
     it("Shows session informations", () => {
-        // Login mock
+
         cy.visit('/login');
 
         cy.intercept('POST', '/api/auth/login', {
@@ -76,7 +76,7 @@ describe("Information session spec", () => {
         cy.get('.mat-raised-button').should("be.enabled");
         cy.url().should('include', '/sessions');
         
-        // Show all sessions informations
+   
         cy.contains("Rentals available").should("be.visible");
         sessions.forEach((session) => {
             cy.contains(session.name).should('be.visible');
@@ -96,27 +96,27 @@ describe("Information session spec", () => {
 
         cy.url().should("include", "/sessions/detail/1");
 
-        // Show session informations
+    
         cy.contains(session.name).should("be.visible");
         cy.contains(`${teacher.firstName} ${teacher.lastName}`).should("be.visible");
         
-        // Picture
+   
         const picture = cy.get('img.picture');
         picture.should('have.attr','src', 'assets/sessions.png');
         picture.should('have.attr','alt', 'Yoga session');
         cy.contains(`${session.users.length} attendees`).should("be.visible");
         
-        // Session date
+       
         const year = getYearFromDate(session.date);
         const month = getMonthName(session.date,"en-US");
         const day = getDayFromDate(session.date);
         cy.contains(`${month} ${day}, ${year}`).should("be.visible");
         
-        // Session description
+      
         cy.contains("Description:").should("be.visible");
         cy.contains(session.description).should("be.visible");
         
-        // Session created at & updated at
+      
         const createYear = getYearFromDate(session.createdAt);
         const createMonth = getMonthName(session.createdAt,"en-US");
         const createDay = getDayFromDate(session.createdAt);
@@ -129,7 +129,7 @@ describe("Information session spec", () => {
     })
     
     it("Shows delete button for admin user", () => {
-        // Login mock
+   
         cy.visit('/login');
 
         cy.intercept('POST', '/api/auth/login', {
@@ -198,7 +198,7 @@ describe("Information session spec", () => {
         cy.get('.mat-raised-button').should("be.enabled");
         cy.url().should('include', '/sessions');
 
-        // Show all sessions informations
+     
         cy.contains("Rentals available").should("be.visible");
         sessions.forEach((session) => {
             cy.contains(session.name).should('be.visible');
@@ -218,7 +218,7 @@ describe("Information session spec", () => {
 
         cy.url().should("include", "/sessions/detail/1");
 
-        // Verify if delete button appears for admin users
+  
         const deleteButton = cy.get("button[mat-raised-button]");
         deleteButton.get("mat-icon").should("contain", "delete");
         deleteButton.get("span.ml1").should("contain", "Delete");

@@ -1,6 +1,6 @@
 describe("Logout spec", () => {
     it("Should logout successfully", () => {
-        // Mock login first
+ 
         cy.visit('/login');
 
         cy.intercept('POST', '/api/auth/login', {
@@ -19,7 +19,7 @@ describe("Logout spec", () => {
         cy.get('.mat-raised-button').should("be.enabled");
         cy.url().should('include', '/sessions');
 
-        // Mock logout then
+      
         cy.contains('Logout').click();
 
         cy.url().should('include', '/');

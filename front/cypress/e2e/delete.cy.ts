@@ -4,7 +4,7 @@ import getFormattedDate from "../utils/Datemanagment";
 
 describe("Delete spec", () => {
     it("Deletes session", () => {
-        // Login mock
+
         cy.visit('/login');
 
         cy.intercept('POST', '/api/auth/login', {
@@ -93,7 +93,7 @@ describe("Delete spec", () => {
         
         cy.intercept("DELETE", `/api/session/${session.id}`, {});
 
-        // Return new array list of sessions after deletion
+     
         const sessionsList = sessions.filter(s => s.id !== session.id);
 
         cy.intercept("GET", "/api/session", {

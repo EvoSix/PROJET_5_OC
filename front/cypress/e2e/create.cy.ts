@@ -4,7 +4,7 @@ import getFormattedDate from "../utils/Datemanagment";
 
 describe("Create spec", () => {
     it("Creates session", () => {
-        // Login mock
+   
         cy.visit('/login');
 
         cy.intercept('POST', '/api/auth/login', {
@@ -84,7 +84,7 @@ describe("Create spec", () => {
 
         cy.get("input[formControlName=name]").type(sessionForm.name);
         cy.get("input[formControlName=date]").type(sessionForm.date);
-        // Select a teacher
+    
         const teacher_input = cy.get("mat-select[formControlName=teacher_id]");
         teacher_input.click();
         teacher_input.get("mat-option");
@@ -117,7 +117,7 @@ describe("Create spec", () => {
     });
 
     it("No creation, empty form fields, disabled submit button", () => {
-        // Login mock
+
         cy.visit('/login');
 
         cy.intercept('POST', '/api/auth/login', {

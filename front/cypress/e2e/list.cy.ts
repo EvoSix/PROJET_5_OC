@@ -6,7 +6,7 @@ import { getMonthName,getDayFromDate,getYearFromDate } from "../utils/Datemanagm
 
 describe("List spec", () => {
     it("Shows list of sessions for admin", () => {
-        // Login mock
+
         cy.visit('/login');
 
         cy.intercept('POST', '/api/auth/login', {
@@ -52,7 +52,7 @@ describe("List spec", () => {
         cy.get('.mat-raised-button').should("be.enabled");
         cy.url().should('include', '/sessions');
 
-        // Show all sessions informations for admin
+      
         cy.contains("Rentals available").should("be.visible");
         cy.contains("Create").should("be.visible");
         sessions.forEach((session) => {
@@ -72,7 +72,7 @@ describe("List spec", () => {
     })
 
     it("Shows list of sessions for non admin users", () => {
-        // Login mock
+     
         cy.visit('/login');
 
         cy.intercept('POST', '/api/auth/login', {
@@ -118,7 +118,7 @@ describe("List spec", () => {
         cy.get('.mat-raised-button').should("be.enabled");
         cy.url().should('include', '/sessions');
 
-        // Show all sessions informations for non admin users
+       
         cy.contains("Rentals available").should("be.visible");
         cy.contains("Create").should("not.exist");
         sessions.forEach((session) => {
