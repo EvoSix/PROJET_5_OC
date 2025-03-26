@@ -64,7 +64,7 @@ public class SessionServiceTest {
     @Test
     @DisplayName("Find all sessions - Success")
     void findAll_ShouldReturnListOfSessions() {
-        // Arrange
+
         List<Session> sessions = List.of(session);
         when(sessionRepository.findAll()).thenReturn(sessions);
 
@@ -106,7 +106,7 @@ public class SessionServiceTest {
     @Test
     @DisplayName("Update Session - Success")
     void update_ShouldReturnUpdatedSession() {
-        // Arrange
+
 
         when(sessionRepository.save(any(Session.class))).thenReturn(session);
 
@@ -123,7 +123,7 @@ public class SessionServiceTest {
     @Test
     @DisplayName("User participate in session - Success")
     void participate_ShouldAddUserToSession() {
-        // Arrange
+
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(sessionRepository.save(any(Session.class))).thenReturn(session);
@@ -139,7 +139,7 @@ public class SessionServiceTest {
     @Test
     @DisplayName("User participate in session - Already Participating")
     void participate_ShouldThrowException_WhenUserAlreadyParticipating() {
-        // Arrange
+
         session.getUsers().add(user);
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
@@ -150,7 +150,7 @@ public class SessionServiceTest {
     @Test
     @DisplayName("User no longer participate in session - Success")
     void noLongerParticipate_ShouldRemoveUserFromSession() {
-        // Arrange
+
         session.getUsers().add(user);
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
 

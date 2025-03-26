@@ -35,16 +35,14 @@ public class TeacherServiceIntegration {
     @Test
     @DisplayName("Find all teachers - Success")
     void findAll_ShouldReturnListOfTeachers() {
-        // Arrange
+
         Teacher teacher1 = new Teacher(null, "Doe", "John", null, null);
         Teacher teacher2 = new Teacher(null, "Smith", "Jane", null, null);
         teacherRepository.save(teacher1);
         teacherRepository.save(teacher2);
 
-        // Act
         List<Teacher> teachers = teacherService.findAll();
 
-        // Assert
         assertEquals(2, teachers.size());
         assertEquals("Smith", teachers.get(0).getLastName());
         assertEquals("Doe", teachers.get(1).getLastName());
@@ -53,14 +51,12 @@ public class TeacherServiceIntegration {
     @Test
     @DisplayName("Find teacher by ID - Success")
     void findById_ShouldReturnTeacher_WhenExists() {
-        // Arrange
+
         Teacher teacher = new Teacher(null, "Doe", "John", null, null);
         Teacher savedTeacher = teacherRepository.save(teacher);
 
-        // Act
         Teacher foundTeacher = teacherService.findById(savedTeacher.getId());
 
-        // Assert
         assertNotNull(foundTeacher);
         assertEquals(savedTeacher.getId(), foundTeacher.getId());
         assertEquals("Doe", foundTeacher.getLastName());
@@ -68,10 +64,9 @@ public class TeacherServiceIntegration {
     @Test
     @DisplayName("Find teacher by ID - Not Found")
     void findById_ShouldReturnNull_WhenNotExists() {
-        // Act
+
         Teacher foundTeacher = teacherService.findById(999L);
 
-        // Assert
         assertNull(foundTeacher);
     }
 }

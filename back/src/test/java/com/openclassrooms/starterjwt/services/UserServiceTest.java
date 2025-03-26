@@ -36,13 +36,11 @@ public class UserServiceTest {
     @Test
     @DisplayName("Find user by ID - Success")
     void findById_ShouldReturnUser_WhenExists() {
-        // Arrange
+
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
-        // Act
         User result = userService.findById(1L);
 
-        // Assert
         assertNotNull(result);
         assertEquals(user.getId(), result.getId());
         assertEquals("test@example.com", result.getEmail());
@@ -52,13 +50,11 @@ public class UserServiceTest {
     @Test
     @DisplayName("Find user by ID - Not Found")
     void findById_ShouldReturnNull_WhenNotExists() {
-        // Arrange
+
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Act
         User result = userService.findById(1L);
 
-        // Assert
         assertNull(result);
         verify(userRepository, times(1)).findById(1L);
     }
@@ -66,10 +62,9 @@ public class UserServiceTest {
     @Test
     @DisplayName("Delete user - Success")
     void delete_ShouldRemoveUser() {
-        // Act
+
         userService.delete(1L);
 
-        // Assert
         verify(userRepository, times(1)).deleteById(1L);
     }
 }

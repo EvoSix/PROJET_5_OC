@@ -54,7 +54,7 @@ public class SessionControllerTest {
     @Test
     @DisplayName("Get Session by ID, Should return session when exist")
     void findById_ShouldReturnSession_WhenSessionExists() throws Exception {
-        // Arrange
+
         Session session = new Session(1L, "Math Class", null, "Description", null, Collections.emptyList(), null, null);
         SessionDto sessionDto = new SessionDto();
         sessionDto.setId(1L);
@@ -63,7 +63,6 @@ public class SessionControllerTest {
         when(sessionService.getById(1L)).thenReturn(session);
         when(sessionMapper.toDto(session)).thenReturn(sessionDto);
 
-        // Act & Assert
         mockMvc.perform(get("/api/session/1")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken))
 
@@ -86,7 +85,7 @@ public class SessionControllerTest {
     @Test
     @DisplayName("Get ALL sessions, Should return List Sessions")
     void findAll_ShouldReturnListOfSessions() throws Exception {
-        // Arrange
+
         Session session1 = new Session();
         Session session2 = new Session();
         List<Session> sessions = Arrays.asList(session1, session2);
@@ -102,7 +101,6 @@ public class SessionControllerTest {
         when(sessionService.findAll()).thenReturn(sessions);
         when(sessionMapper.toDto(sessions)).thenReturn(Arrays.asList(sessionDto1, sessionDto2));
 
-        // Act & Assert
         mockMvc.perform(get("/api/session")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken))
                 .andExpect(status().isOk())
@@ -115,7 +113,7 @@ public class SessionControllerTest {
     @Test
     @DisplayName("Post a Session, should return Session DTO in success ")
     void create_ShouldReturnSessionDto_WhenSuccessful() throws Exception {
-        // Arrange
+
         SessionDto sessionDto = new SessionDto();
         sessionDto.setName("New Session");
 
@@ -134,7 +132,7 @@ public class SessionControllerTest {
                 .content(objectMapper.writeValueAsString(sessionDto)));
 
         System.out.println("Réponse JSON : " + result.andReturn().getResponse().getContentAsString());
-        // Act & Assert
+
         mockMvc.perform(post("/api/session")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
                         .contentType(MediaType.APPLICATION_JSON)

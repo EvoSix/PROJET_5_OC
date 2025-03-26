@@ -62,7 +62,7 @@ public class AuthControllerTest {
     @Test
     @DisplayName("EndPoint Login , should Return Jwt")
     void authenticateUser_ShouldReturnJwtResponse_WhenCredentialsAreValid() throws Exception {
-        // Arrange
+
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setEmail("test@example.com");
         loginRequest.setPassword("password");
@@ -76,7 +76,6 @@ public class AuthControllerTest {
         when(jwtUtils.generateJwtToken(authentication)).thenReturn("mocked-jwt-token");
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(new User()));
 
-        // Act & Assert
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
@@ -88,7 +87,7 @@ public class AuthControllerTest {
     @Test
     @DisplayName("EndPoint Register , should Return Success")
     void registerUser_ShouldReturnSuccessMessage_WhenRegistrationIsSuccessful() throws Exception {
-        // Arrange
+
         SignupRequest signupRequest = new SignupRequest();
         signupRequest.setEmail("newuser@example.com");
         signupRequest.setPassword("password");
@@ -98,7 +97,6 @@ public class AuthControllerTest {
         when(userRepository.existsByEmail("newuser@example.com")).thenReturn(false);
         when(passwordEncoder.encode("password")).thenReturn("encoded-password");
 
-        // Act & Assert
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(signupRequest)))
@@ -110,7 +108,7 @@ public class AuthControllerTest {
     @Test
     @DisplayName("EndPoint Register, Should return error")
     void registerUser_ShouldReturnErrorMessage_WhenEmailAlreadyExists() throws Exception {
-        // Arrange
+
         SignupRequest signupRequest = new SignupRequest();
         signupRequest.setEmail("existinguser@example.com");
         signupRequest.setPassword("password");
@@ -119,7 +117,6 @@ public class AuthControllerTest {
 
         when(userRepository.existsByEmail("existinguser@example.com")).thenReturn(true);
 
-        // Act & Assert
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(signupRequest)))

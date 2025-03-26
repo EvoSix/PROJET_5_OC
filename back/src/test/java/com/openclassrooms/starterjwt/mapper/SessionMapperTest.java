@@ -75,7 +75,7 @@ public class SessionMapperTest {
     @Test
     @DisplayName("Convert Session to SessionDto - Success")
     void toDto_ShouldMapEntityToDto() {
-        // Arrange
+
         Teacher teacher = new Teacher(1L, "Smith", "John", null, null);
         User user = new User(2L, "test@example.com", "Doe", "Jane", "pass", false, null, null);
 
@@ -101,7 +101,7 @@ public class SessionMapperTest {
     @Test
     @DisplayName("Convert list of SessionDto to list of Session")
     void toEntityList_ShouldMapSessionDtoListToEntityList() {
-        // Arrange
+
         SessionDto dto1 = new SessionDto();
         dto1.setId(1L);
         dto1.setName("Session A");
@@ -118,10 +118,8 @@ public class SessionMapperTest {
 
         when(teacherService.findById(anyLong())).thenReturn(new Teacher());
 
-        // Act
         List<Session> result = sessionMapper.toEntity(List.of(dto1, dto2));
 
-        // Assert
         assertEquals(2, result.size());
         assertEquals("Session A", result.get(0).getName());
         assertEquals("Session B", result.get(1).getName());
@@ -130,7 +128,7 @@ public class SessionMapperTest {
     @Test
     @DisplayName("Convert list of Session to list of SessionDto")
     void toDtoList_ShouldMapSessionListToDtoList() {
-        // Arrange
+
         Session s1 = new Session();
         s1.setId(1L);
         s1.setName("Session A");
@@ -145,10 +143,8 @@ public class SessionMapperTest {
         s2.setTeacher(new Teacher(2L, "Doe", "Jane", null, null));
         s2.setUsers(List.of());
 
-        // Act
         List<SessionDto> result = sessionMapper.toDto(List.of(s1, s2));
 
-        // Assert
         assertEquals(2, result.size());
         assertEquals("Session A", result.get(0).getName());
         assertEquals("Session B", result.get(1).getName());

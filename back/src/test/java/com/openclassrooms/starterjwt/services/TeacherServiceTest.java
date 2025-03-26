@@ -36,14 +36,12 @@ public class TeacherServiceTest {
     @Test
     @DisplayName("Find all teachers - Success")
     void findAll_ShouldReturnListOfTeachers() {
-        // Arrange
+
         List<Teacher> teachers = List.of(teacher);
         when(teacherRepository.findAll()).thenReturn(teachers);
 
-        // Act
         List<Teacher> result = teacherService.findAll();
 
-        // Assert
         assertEquals(1, result.size());
         assertEquals("Doe", result.get(0).getLastName());
         verify(teacherRepository, times(1)).findAll();
@@ -51,13 +49,11 @@ public class TeacherServiceTest {
     @Test
     @DisplayName("Find teacher by ID - Success")
     void findById_ShouldReturnTeacher_WhenExists() {
-        // Arrange
+
         when(teacherRepository.findById(1L)).thenReturn(Optional.of(teacher));
 
-        // Act
         Teacher result = teacherService.findById(1L);
 
-        // Assert
         assertNotNull(result);
         assertEquals(teacher.getId(), result.getId());
         assertEquals("Doe", result.getLastName());
@@ -67,13 +63,11 @@ public class TeacherServiceTest {
     @Test
     @DisplayName("Find teacher by ID - Not Found")
     void findById_ShouldReturnNull_WhenNotExists() {
-        // Arrange
+
         when(teacherRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Act
         Teacher result = teacherService.findById(1L);
 
-        // Assert
         assertNull(result);
         verify(teacherRepository, times(1)).findById(1L);
     }

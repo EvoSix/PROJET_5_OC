@@ -51,16 +51,14 @@ public class SessionServiceIntegration {
     @Test
     @DisplayName("Create Session - Success")
     void create_ShouldReturnSavedSession() {
-        // Arrange
+
         Session newSession = new Session();
         newSession.setName("New Session");
         newSession.setDate(new Date());
         newSession.setDescription("New session description");
 
-        // Act
         Session savedSession = sessionService.create(newSession);
 
-        // Assert
         assertNotNull(savedSession);
         assertNotNull(savedSession.getId());
         assertEquals("New Session", savedSession.getName());
@@ -68,10 +66,9 @@ public class SessionServiceIntegration {
     @Test
     @DisplayName("Find all sessions - Success")
     void findAll_ShouldReturnListOfSessions() {
-        // Act
+
         List<Session> sessions = sessionService.findAll();
 
-        // Assert
         assertEquals(1, sessions.size());
         assertEquals("Test Session", sessions.get(0).getName());
     }
@@ -79,10 +76,9 @@ public class SessionServiceIntegration {
     @Test
     @DisplayName("Find session by ID - Success")
     void getById_ShouldReturnSession_WhenExists() {
-        // Act
+
         Session foundSession = sessionService.getById(session.getId());
 
-        // Assert
         assertNotNull(foundSession);
         assertEquals(session.getId(), foundSession.getId());
     }
@@ -90,23 +86,20 @@ public class SessionServiceIntegration {
     @Test
     @DisplayName("Find session by ID - Not Found")
     void getById_ShouldReturnNull_WhenNotExists() {
-        // Act
+
         Session foundSession = sessionService.getById(999L);
 
-        // Assert
         assertNull(foundSession);
     }
 
     @Test
     @DisplayName("Update Session - Success")
     void update_ShouldReturnUpdatedSession() {
-        // Arrange
+
         session.setName("Updated Session");
 
-        // Act
         Session updatedSession = sessionService.update(session.getId(), session);
 
-        // Assert
         assertNotNull(updatedSession);
         assertEquals("Updated Session", updatedSession.getName());
     }
@@ -114,10 +107,9 @@ public class SessionServiceIntegration {
     @Test
     @DisplayName("Delete Session - Success")
     void delete_ShouldRemoveSession() {
-        // Act
+
         sessionService.delete(session.getId());
 
-        // Assert
         Optional<Session> deletedSession = sessionRepository.findById(session.getId());
         assertFalse(deletedSession.isPresent());
     }
@@ -125,15 +117,13 @@ public class SessionServiceIntegration {
     @Test
     @DisplayName("User participate in session - Success")
     void participate_ShouldAddUserToSession() {
-        // Arrange
+
         User user = new User();
         user.setEmail("test@example.com");
         user = userRepository.save(user);
 
-        // Act
         sessionService.participate(session.getId(), user.getId());
 
-        // Assert
         Session updatedSession = sessionRepository.findById(session.getId()).orElse(null);
         assertNotNull(updatedSession);
         assertEquals(1, updatedSession.getUsers().size());
@@ -143,7 +133,7 @@ public class SessionServiceIntegration {
     @Test
     @DisplayName("User participate in session - Already Participating")
     void participate_ShouldThrowException_WhenUserAlreadyParticipating() {
-        // Arrange
+
         User user = new User();
         user.setEmail("test@example.com");
         user = userRepository.save(user);
@@ -157,16 +147,14 @@ public class SessionServiceIntegration {
     @Test
     @DisplayName("User no longer participate in session - Success")
     void noLongerParticipate_ShouldRemoveUserFromSession() {
-        // Arrange
+
         User user = new User();
         user.setEmail("test@example.com");
         user = userRepository.save(user);
         sessionService.participate(session.getId(), user.getId());
 
-        // Act
         sessionService.noLongerParticipate(session.getId(), user.getId());
 
-        // Assert
         Session updatedSession = sessionRepository.findById(session.getId()).orElse(null);
         assertNotNull(updatedSession);
         assertTrue(updatedSession.getUsers().isEmpty());
@@ -175,12 +163,10 @@ public class SessionServiceIntegration {
     @Test
     @DisplayName("User no longer participate in session - Not Participating")
     void noLongerParticipate_ShouldThrowException_WhenUserNotParticipating() {
-        // Arrange
+
         User user = new User();
         user.setEmail("test@example.com");
 
-
-        // Act & Assert
         assertThrows(BadRequestException.class, () -> sessionService.noLongerParticipate(session.getId(), 1L));
     }
 }

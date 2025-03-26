@@ -54,7 +54,7 @@ public class AuthTokenFilterTest {
 
     @Test
     public void withGoodToken_doFilterInternal_shouldAuthenticateByEmail() throws ServletException, IOException {
-        // GIVEN
+
         String token = "jwt";
         String email = "bob@test.com";
         UserDetails userDetails = new UserDetailsImpl(1L,email,"Bob", "Le Bricoleur", true, "pass4321");
@@ -62,10 +62,10 @@ public class AuthTokenFilterTest {
         when(jwtUtils.validateJwtToken(token)).thenReturn(true);
         when(jwtUtils.getUserNameFromJwtToken(token)).thenReturn(email);
         when(userDetailsService.loadUserByUsername(email)).thenReturn(userDetails);
-        // WHEN
+
         authTokenFilter.doFilterInternal(request, response, filter);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        // THEN
+
         verify(filter).doFilter(request, response);
         verify(userDetailsService).loadUserByUsername(email);
         assertThat(auth.getName()).isEqualTo(email);
@@ -73,39 +73,39 @@ public class AuthTokenFilterTest {
 
     @Test
     public void withoutToken_doFilterInternal_shouldNotAuthenticate() throws ServletException, IOException {
-        // GIVEN
+
         when(request.getHeader("Authorization")).thenReturn("");
-        // WHEN
+
         authTokenFilter.doFilterInternal(request, response, filter);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        // THEN
+
         verify(filter).doFilter(request, response);
         assertThat(auth).isNull();
     }
 
     @Test
     public void tokenWithoutBearer_doFilterInternal_shouldNotAuthenticate() throws ServletException, IOException {
-        // GIVEN
+
         String token = "jwt";
         when(request.getHeader("Authorization")).thenReturn(token);
-        // WHEN
+
         authTokenFilter.doFilterInternal(request, response, filter);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        // THEN
+
         verify(filter).doFilter(request, response);
         assertThat(auth).isNull();
     }
 
     @Test
     public void withInvalidToken_doFilterInternal_shouldNotAuthenticate() throws ServletException, IOException {
-        // GIVEN
+
         String token = "jwt";
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
         when(jwtUtils.validateJwtToken(token)).thenReturn(false);
-        // WHEN
+
         authTokenFilter.doFilterInternal(request, response, filter);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        // THEN
+
         verify(filter).doFilter(request, response);
         assertThat(auth).isNull();
     }

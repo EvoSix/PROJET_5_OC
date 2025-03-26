@@ -49,14 +49,13 @@ public class AuthControllerIntegration {
     @Test
     @DisplayName("Register user - Success")
     void registerUser_ShouldReturnSuccessMessage() throws Exception {
-        // Arrange
+
         SignupRequest signup = new SignupRequest();
         signup.setEmail("test@example.com");
         signup.setFirstName("John");
         signup.setLastName("Doe");
         signup.setPassword("securePassword");
 
-        // Act & Assert
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(signup)))
@@ -67,7 +66,7 @@ public class AuthControllerIntegration {
     @Test
     @DisplayName("Login user - Success")
     void loginUser_ShouldReturnJwtToken() throws Exception {
-        // Arrange: créer un utilisateur directement en base
+
         var user = new com.openclassrooms.starterjwt.models.User(
                 "test@example.com", "Doe", "John", passwordEncoder.encode("securePassword"), false);
         userRepository.save(user);
@@ -76,7 +75,6 @@ public class AuthControllerIntegration {
         login.setEmail("test@example.com");
         login.setPassword("securePassword");
 
-        // Act & Assert
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(login)))
@@ -91,7 +89,7 @@ public class AuthControllerIntegration {
     @Test
     @DisplayName("Register user - Email already exists")
     void registerUser_ShouldFail_WhenEmailExists() throws Exception {
-        // Arrange
+
         var existingUser = new com.openclassrooms.starterjwt.models.User(
                 "duplicate@example.com", "Dup", "User", passwordEncoder.encode("password123"), false);
         userRepository.save(existingUser);
@@ -102,7 +100,6 @@ public class AuthControllerIntegration {
         signup.setLastName("Doe");
         signup.setPassword("password123");
 
-        // Act & Assert
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(signup)))

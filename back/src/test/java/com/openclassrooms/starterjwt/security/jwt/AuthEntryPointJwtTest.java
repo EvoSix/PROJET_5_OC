@@ -40,13 +40,13 @@ public class AuthEntryPointJwtTest {
     @Test
     @ExtendWith(OutputCaptureExtension.class)
     void testCommence(CapturedOutput capture) throws IOException, ServletException {
-        // GIVEN
+
         String errorMsg = "Auth error";
         when(authExceptionMock.getMessage()).thenReturn(errorMsg);
         when(httpResponseMock.getOutputStream()).thenReturn(fakeOutputStream);
-        // WHEN
+
         authEntryPointJwt.commence(requestMock, httpResponseMock, authExceptionMock);
-        // THEN
+
         assertThat(capture.getOut()).contains(errorMsg);
     }
 }

@@ -55,10 +55,8 @@ public class UserDetailsServiceImplTest {
                 .password(user.getPassword())
                 .build();
 
-        // Mock a request UserDetails
         UserDetails reqUserDetails = userDetailsServiceImpl.loadUserByUsername(username);
 
-        // Compare userDetails & request user details
         assertEquals(userDetails,reqUserDetails);
 
         verify(userRepository, times(1)).findByEmail(username);

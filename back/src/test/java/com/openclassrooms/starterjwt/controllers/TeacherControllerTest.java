@@ -45,19 +45,16 @@ public class TeacherControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(teacherController).build();
     }
 
-
-    //GET /api/teacher/{id}
     @Test
     @DisplayName("Get Teacher by ID, When exist")
     void findById_ShouldReturnTeacher_WhenExists() throws Exception {
-        // Arrange
+
         Teacher teacher = new Teacher(1L, "Doe", "John", null, null);
         TeacherDto teacherDto = new TeacherDto(1L, "Doe", "John", null, null);
 
         when(teacherService.findById(1L)).thenReturn(teacher);
         when(teacherMapper.toDto(teacher)).thenReturn(teacherDto);
 
-        // Act & Assert
         mockMvc.perform(get("/api/teacher/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
@@ -80,7 +77,7 @@ public class TeacherControllerTest {
         mockMvc.perform(get("/api/teacher/abc")) // ID non valide
                 .andExpect(status().isBadRequest());
     }
-//GET /api/teacher
+
     @Test
     @DisplayName("Get All Teachers, Success")
     void findAll_ShouldReturnListOfTeachers() throws Exception {
@@ -95,7 +92,6 @@ public class TeacherControllerTest {
         when(teacherService.findAll()).thenReturn(teachers);
         when(teacherMapper.toDto(teachers)).thenReturn(Arrays.asList(teacherDto1, teacherDto2));
 
-        // Act & Assert
         mockMvc.perform(get("/api/teacher"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))

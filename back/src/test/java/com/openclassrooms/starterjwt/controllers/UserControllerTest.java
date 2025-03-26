@@ -44,19 +44,16 @@ public class UserControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     }
 
-
-    //GET /api/user/{id}
     @Test
     @DisplayName("Get User by ID, when exist")
     void findById_ShouldReturnUser_WhenExists() throws Exception {
-        // Arrange
+
         User user = new User(1L, "test@example.com", "Doe", "John", "password", false, null, null);
         UserDto userDto = new UserDto(1L, "test@example.com", "Doe", "John", false, "password", null, null);
 
         when(userService.findById(1L)).thenReturn(user);
         when(userMapper.toDto(user)).thenReturn(userDto);
 
-        // Act & Assert
         mockMvc.perform(get("/api/user/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
@@ -81,11 +78,10 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    //DELETE /api/user/{id}
     @Test
     @DisplayName("Delete User, when user Exist And Authorized")
     void delete_ShouldReturnOk_WhenUserExistsAndAuthorized() throws Exception {
-        // Arrange
+
         User user = new User(1L, "test@example.com", "Doe", "John", "password", false, null, null);
         UserDetails userDetails = mock(UserDetails.class);
 
@@ -93,7 +89,6 @@ public class UserControllerTest {
         when(userDetails.getUsername()).thenReturn("test@example.com");
         SecurityContextHolder.getContext().setAuthentication(new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(userDetails, null));
 
-        // Act & Assert
         mockMvc.perform(delete("/api/user/1"))
                 .andExpect(status().isOk());
 
@@ -103,7 +98,7 @@ public class UserControllerTest {
     @Test
     @DisplayName("Delete User, When User Not Same")
     void delete_ShouldReturnUnauthorized_WhenUserNotSame() throws Exception {
-        // Arrange
+
         User user = new User(1L, "other@example.com", "Doe", "John", "password", false, null, null);
         UserDetails userDetails = mock(UserDetails.class);
 
@@ -111,7 +106,6 @@ public class UserControllerTest {
         when(userDetails.getUsername()).thenReturn("test@example.com");
         SecurityContextHolder.getContext().setAuthentication(new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(userDetails, null));
 
-        // Act & Assert
         mockMvc.perform(delete("/api/user/1"))
                 .andExpect(status().isUnauthorized());
 
