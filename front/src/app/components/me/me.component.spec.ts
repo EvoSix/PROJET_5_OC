@@ -98,7 +98,7 @@ describe("MeComponent", () => {
     jest.spyOn(userService, "getById");
 
     component.ngOnInit();
-    tick(); // ⏳ Simule le passage du temps pour exécuter `subscribe()`
+    tick();
     flush();
     expect(component.user).toBeDefined();
     expect(component.user?.email).toBe("John.doe@example.com");
@@ -125,7 +125,7 @@ describe("MeComponent", () => {
       "Your account has been deleted !",
       "Close",
       { duration: 3000 }
-    ); // Vérifie l'affichage du message
+    ); 
     expect(sessionLogoutSpy).toHaveBeenCalled();
   }));
 });
