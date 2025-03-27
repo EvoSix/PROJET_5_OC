@@ -1,4 +1,5 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { expect } from '@jest/globals';
 
@@ -129,4 +130,103 @@ describe('SessionsService with mocked http', () => {
     }))
   });
 
+});
+
+
+describe('SessionsService (intégration)', () => {
+  let service: SessionApiService;
+  let httpMock: HttpTestingController;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [SessionApiService]
+    });
+
+    service = TestBed.inject(SessionApiService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
+  });
+
+  it('should fetch all sessions (GET)', () => {
+    const mockSessions = [{ id: 1 }, { id: 2 }] as any;
+
+    service.all().subscribe((res) => {
+      expect(res.length).toBe(2);
+      expect(res).toEqual(mockSessions);
+    });
+
+    const req = httpMock.expectOne('api/session');
+    expect(req.request.method).toBe('GET');
+    req.flush(mockSessions);
+  });
+
+  it('should fetch one session by id (GET)', () => {
+    const mockSession = { id: 1 } as any;
+
+    service.detail("1").subscribe((res) => {
+      expect(res).toEqual(mockSession);
+    });
+
+    const req = httpMock.expectOne('api/session/1');
+    expect(req.request.method).toBe('GET');
+    req.flush(mockSession);
+  });
+
+  it('should delete session by id (DELETE)', () => {
+    service.delete("1").subscribe((res) => {
+      expect(res).toBeDefined();
+    });
+
+    const req = httpMock.expectOne('api/session/1');
+    expect(req.request.method).toBe('DELETE');
+    req.flush({});
+  });
+
+  it('should create a new session (POST)', () => {
+    const session = { name: "New session" } as any;
+
+    service.create(session).subscribe((res) => {
+      expect(res).toEqual(session);
+    });
+
+    const req = httpMock.expectOne('api/session');
+    expect(req.request.method).toBe('POST');
+    req.flush(session);
+  });
+
+  it('should update a session (PUT)', () => {
+    const session = { id: 1, name: "Updated session" } as any;
+
+    service.update("1", session).subscribe((res) => {
+      expect(res).toEqual(session);
+    });
+
+    const req = httpMock.expectOne('api/session/1');
+    expect(req.request.method).toBe('PUT');
+    req.flush(session);
+  });
+
+  it('should participate in a session (POST)', () => {
+    service.participate("1", "2").subscribe((res) => {
+      expect(res).toBeUndefined();
+    });
+
+    const req = httpMock.expectOne('api/session/1/participate/2');
+    expect(req.request.method).toBe('POST');
+    req.flush(null);
+  });
+
+  it('should unParticipate from a session (DELETE)', () => {
+    service.unParticipate("1", "2").subscribe((res) => {
+      expect(res).toBeUndefined();
+    });
+
+    const req = httpMock.expectOne('api/session/1/participate/2');
+    expect(req.request.method).toBe('DELETE');
+    req.flush(null);
+  });
 });
