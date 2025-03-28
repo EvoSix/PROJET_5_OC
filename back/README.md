@@ -42,5 +42,5 @@ Par défaut, le compte administrateur est :
 
 - login : yoga@studio.com
 - mot de passe : test!1234
-
-
+### H2
+Les scripts SQL pour les donnée et le schéma de H2 sont dans:`src/test/ressources/` 
