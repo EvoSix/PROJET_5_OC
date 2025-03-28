@@ -44,8 +44,8 @@ public class TeacherServiceIntegration {
         List<Teacher> teachers = teacherService.findAll();
 
         assertEquals(2, teachers.size());
-        assertEquals("Smith", teachers.get(0).getLastName());
-        assertEquals("Doe", teachers.get(1).getLastName());
+        assertEquals("Doe", teachers.get(0).getLastName());
+        assertEquals("Smith", teachers.get(1).getLastName());
     }
 
     @Test
